@@ -77,11 +77,15 @@ if (loginForm) {
             if (response.ok) {
                 message.textContent = 'Login successful!';
                 message.className = 'message success';
-                
+
                 localStorage.setItem('user', JSON.stringify(data.user));
-                
+
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    if (data.user.role === 'admin') {
+                        window.location.href = 'admin-dashboard.html'; 
+                    } else {
+                        window.location.href = 'user-dashboard.html';   
+                    }
                 }, 1000);
             } else {
                 message.textContent = data.message;
@@ -92,28 +96,4 @@ if (loginForm) {
             message.className = 'message error';
         }
     });
-}
-
-if (window.location.pathname.includes('dashboard.html')) {
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    if (!user) {
-        window.location.href = 'login.html';
-    } else {
-        const welcomeTitle = document.querySelector('.welcome-card h1');
-        const welcomeText = document.querySelector('.welcome-card > p');
-        
-        if (user.role === 'admin') {
-            welcomeTitle.textContent = 'Welcome Admin! 👑';
-            welcomeText.textContent = 'You have full access to the Study Resource Organizer';
-        } else {
-            welcomeTitle.textContent = `Welcome ${user.name}! 👋`;
-            welcomeText.textContent = 'You have successfully logged in to Study Resource Organizer';
-        }
-    }
-}
-
-function logout() {
-    localStorage.removeItem('user');
-    window.location.href = 'login.html';
 }

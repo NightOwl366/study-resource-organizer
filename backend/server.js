@@ -15,7 +15,7 @@ app.use(cors({
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-mongoose.connect('mongodb://localhost:27017/studyorganizer_temp')
+mongoose.connect('mongodb://localhost:27017/studyorganizer')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log('Error:', err));
 

@@ -4,26 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="user-dashboard.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
+    <div class="header">
+        <div class="header-left">
             <h1>Student Dashboard 📚</h1>
-            <div class="header-buttons">
-                <button onclick="logout()" class="btn-logout">Logout</button>
+            <p class="user-name">Welcome, <span id="userName"></span></p>
+        </div>
+        <div class="header-right">
+            <button onclick="logout()" class="btn-logout">Logout</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="filter-section">
+            <h2>Filter by Category</h2>
+            <div class="category-filter">
+                <button class="filter-btn active" onclick="filterCategory('All', this)">All</button>
+                <button class="filter-btn" onclick="filterCategory('Notes', this)">📘 Notes</button>
+                <button class="filter-btn" onclick="filterCategory('Videos', this)">🎥 Videos</button>
+                <button class="filter-btn" onclick="filterCategory('Assignments', this)">📄 Assignments</button>
+                <button class="filter-btn" onclick="filterCategory('Books', this)">📚 Books</button>
+                <button class="filter-btn" onclick="filterCategory('Practice', this)">🧠 Practice</button>
             </div>
         </div>
 
-        <div class="user-info-section">
-            <h2>Your Account</h2>
-            <p><strong>Name:</strong> <span id="userName"></span></p>
-            <p><strong>Email:</strong> <span id="userEmail"></span></p>
-            <p><strong>Role:</strong> <span id="userRole"></span></p>
-        </div>
-
-        <div class="resources-list-section">
+        <div class="resources-section">
             <h2>Study Resources</h2>
             <div id="resourcesList"></div>
         </div>

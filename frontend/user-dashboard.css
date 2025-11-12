@@ -1,78 +1,172 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f5f7;
     margin: 0;
     padding: 0;
-}
-
-.container {
-    max-width: 850px;
-    margin: 30px auto;
-    background: #fff;
-    border-radius: 6px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
-    padding: 25px 30px;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
 }
 
 .header {
+    background-color: white;
+    padding: 25px 40px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
 }
 
-.header h1 {
-    font-size: 24px;
+.header-left h1 {
+    margin: 0;
+    font-size: 26px;
+    color: #333;
 }
 
-.header-buttons button {
-    margin-left: 10px;
+.user-name {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    color: #888;
 }
 
 .btn-logout {
-    background-color: #e74c3c;
+    background-color: #dc3545;
     color: white;
     border: none;
-    padding: 8px 14px;
-    border-radius: 4px;
+    padding: 11px 22px;
+    border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-}
-
-.user-info-section {
-    margin-top: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #ddd;
-}
-
-.user-info-section h2 {
-    margin-bottom: 10px;
-}
-
-.user-info-section p {
-    margin: 5px 0;
     font-size: 15px;
 }
 
-.resources-list-section {
-    margin-top: 25px;
+.btn-logout:hover {
+    background-color: #c82333;
 }
 
-.resources-list-section h2 {
-    margin-bottom: 10px;
+.main-container {
+    max-width: 1100px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+.filter-section {
+    background-color: white;
+    padding: 22px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.filter-section h2 {
+    margin: 0 0 16px 0;
+    font-size: 19px;
+    color: #333;
+}
+
+.category-filter {
+    display: flex;
+    gap: 11px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background-color: #e9ecef;
+    color: #495057;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.filter-btn:hover {
+    background-color: #dee2e6;
+}
+
+.filter-btn.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.resources-section {
+    background-color: white;
+    padding: 22px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.resources-section h2 {
+    margin: 0 0 22px 0;
+    font-size: 20px;
+    color: #333;
 }
 
 #resourcesList {
-    border: 1px solid #ddd;
-    background-color: #fafafa;
-    padding: 15px;
-    border-radius: 4px;
-    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-@media (max-width: 600px) {
-    .header-buttons {
-        margin-top: 10px;
+.resource-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 18px;
+    border-radius: 6px;
+}
+
+.resource-card h3 {
+    margin: 0 0 9px 0;
+    color: #007bff;
+    font-size: 18px;
+}
+
+.category-badge {
+    display: inline-block;
+    background-color: #e7f3ff;
+    color: #0056b3;
+    padding: 5px 11px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 11px;
+}
+
+.resource-card p {
+    margin: 11px 0;
+    color: #555;
+    line-height: 1.5;
+}
+
+.card-buttons {
+    display: flex;
+    gap: 11px;
+    margin-top: 16px;
+}
+
+.card-buttons a {
+    background-color: #007bff;
+    color: white;
+    padding: 9px 17px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.card-buttons a:hover {
+    background-color: #0056b3;
+}
+
+.no-resources {
+    text-align: center;
+    color: #999;
+    padding: 45px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 17px;
+    }
+    
+    .btn-logout {
+        width: 100%;
     }
 }

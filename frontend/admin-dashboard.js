@@ -1,101 +1,114 @@
 const API_URL = 'http://localhost:5000';
 
-const user = JSON.parse(localStorage.getItem('user'));
+let user;
+try {
+    user = JSON.parse(localStorage.getItem('user'));
+} catch (error) {
+    user = null;
+}
+
 if (!user || user.role !== 'admin') {
     window.location.href = 'login.html';
 }
 
 document.getElementById('userName').textContent = user.name;
-document.getElementById('userEmail').textContent = user.email;
-document.getElementById('userRole').textContent = user.role;
+
+let allResources = [];
+let currentFilter = 'All';
 
 loadResources();
 
-const addResourceForm = document.getElementById('addResourceForm');
-addResourceForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-    const category = document.getElementById('category').value;
-    const fileInput = document.getElementById('file');
-    const message = document.getElementById('addMessage');
-
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('category', category);
-    formData.append('file', fileInput.files[0]);
-    formData.append('userEmail', user.email);
-
-    try {
-        const response = await fetch(`${API_URL}/resources`, {
-            method: 'POST',
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            message.textContent = 'Resource added!';
-            message.className = 'message success';
-            addResourceForm.reset();
-            loadResources();
-        } else {
-            message.textContent = data.message;
-            message.className = 'message error';
-        }
-    } catch (error) {
-        message.textContent = 'Server error';
-        message.className = 'message error';
-    }
-});
+function goToAddResource() {
+    window.location.href = 'add-resource.html';
+}
 
 async function loadResources() {
     try {
         const response = await fetch(`${API_URL}/resources`);
-        const resources = await response.json();
-
-        const container = document.getElementById('resourcesList');
-        container.innerHTML = '';
-
-        if (resources.length === 0) {
-            container.innerHTML = '<p>No resources available</p>';
-            return;
-        }
-
-        resources.forEach(resource => {
-            const card = document.createElement('div');
-            card.className = 'resource-card';
-            card.innerHTML = `
-                <h3>${resource.title}</h3>
-                <p><strong>Category:</strong> ${resource.category}</p>
-                <p>${resource.description}</p>
-                <a href="${API_URL}${resource.filePath}" target="_blank">Download File</a>
-                <button onclick="deleteResource('${resource._id}')">Delete</button>
-                <hr>
-            `;
-            container.appendChild(card);
-        });
+        const data = await response.json();
+        allResources = data;
+        displayResources();
     } catch (error) {
-        console.log('Error loading resources');
+        console.log('Error:', error);
+        document.getElementById('resourcesList').innerHTML = '<p class="no-resources">Failed to load resources</p>';
     }
 }
 
-async function deleteResource(id) {
-    if (confirm('Delete this resource?')) {
+function displayResources() {
+    const container = document.getElementById('resourcesList');
+    container.innerHTML = '';
+
+    let resourcesToShow = allResources;
+    
+    if (currentFilter !== 'All') {
+        resourcesToShow = [];
+        for (let i = 0; i < allResources.length; i++) {
+            if (allResources[i].category === currentFilter) {
+                resourcesToShow.push(allResources[i]);
+            }
+        }
+    }
+
+    if (resourcesToShow.length === 0) {
+        container.innerHTML = '<p class="no-resources">No resources found</p>';
+        return;
+    }
+
+    for (let i = 0; i < resourcesToShow.length; i++) {
+        const resource = resourcesToShow[i];
+        
+        const card = document.createElement('div');
+        card.className = 'resource-card';
+        
+        card.innerHTML = `
+            <h3>${resource.title}</h3>
+            <span class="category-badge">${resource.category}</span>
+            <p>${resource.description}</p>
+            <div class="card-buttons">
+                <a href="${API_URL}${resource.filePath}" target="_blank">Download</a>
+                <button onclick="deleteResource('${resource._id}')">Delete</button>
+            </div>
+        `;
+        
+        container.appendChild(card);
+    }
+}
+
+function filterCategory(category, button) {
+    currentFilter = category;
+    
+    const allButtons = document.querySelectorAll('.filter-btn');
+    for (let i = 0; i < allButtons.length; i++) {
+        allButtons[i].classList.remove('active');
+    }
+    
+    button.classList.add('active');
+    
+    displayResources();
+}
+
+async function deleteResource(resourceId) {
+    const confirmDelete = confirm('Are you sure you want to delete this resource?');
+    
+    if (confirmDelete) {
         try {
-            const response = await fetch(`${API_URL}/resources/${id}`, {
+            const response = await fetch(`${API_URL}/resources/${resourceId}`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({ userEmail: user.email })
             });
 
             if (response.ok) {
+                alert('Resource deleted successfully!');
                 loadResources();
+            } else {
+                alert('Failed to delete resource');
             }
         } catch (error) {
-            alert('Server error');
+            console.log('Error:', error);
+            alert('Error deleting resource');
         }
     }
 }

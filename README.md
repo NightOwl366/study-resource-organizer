@@ -40,7 +40,7 @@ Before running this project, make sure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone <https://github.com/NightOwl366/study-resource-organizer.git>
+   git clone https://github.com/NightOwl366/study-resource-organizer.git
    cd STUDY-RESOURCE-ORGANIZER
    ```
 
